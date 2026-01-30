@@ -1891,7 +1891,7 @@ export default function App() {
         setModels(list);
       })
       .catch(() => {});
-  }, [addLog]);
+  }, []);
 
   // Sign in the user through Puter auth
   const signIn = useCallback(async () => {
