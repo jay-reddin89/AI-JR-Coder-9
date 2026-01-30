@@ -28,9 +28,25 @@ function useDebounce(value, delay) {
 
 // Log list component
 function LogPanel({ log }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className="log-panel bg-[#e8e8e8] shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff] rounded-2xl p-4">
-      <div className="text-[#666] font-mono text-xs space-y-1 max-h-32 overflow-y-auto">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[#666] font-mono text-xs font-bold">
+          Build Logs ({log.length})
+        </span>
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-[#666] hover:text-[#333] text-xs font-bold transition-colors"
+          title={isExpanded ? "Collapse" : "Expand"}
+        >
+          {isExpanded ? "▼" : "▶"}
+        </button>
+      </div>
+      <div className={`text-[#666] font-mono text-xs space-y-1 overflow-y-auto transition-all ${
+        isExpanded ? "max-h-96" : "max-h-32"
+      }`}>
         {log.map((l, i) => (
           <div
             key={i}
