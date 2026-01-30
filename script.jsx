@@ -2220,7 +2220,7 @@ RULES:
       addLog(`❌ Error: ${err.message}`);
     }
     setGenerating(false);
-  }, [selectedApp, editCode, puter, database, addLog]);
+  }, [selectedApp, editCode, puter, database]);
 
   // Bulk delete selected apps
   const bulkDelete = useCallback(async () => {
