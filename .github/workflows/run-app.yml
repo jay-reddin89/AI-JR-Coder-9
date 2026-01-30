@@ -1,0 +1,107 @@
+# Install and Run app — generic Node.js workflow
+# - Installs Node
+# - Installs deps (uses npm ci when package-lock.json exists)
+# - Builds if `npm run build` exists
+# - Starts the app in background
+# - Waits for a healthcheck (http://localhost:${{ env.PORT }})
+# - Runs smoke tests (npm test) if present
+# - Stops the app and exits
+
+name: Install and Run App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+concurrency:
+  group: install-and-run-app
+  cancel-in-progress: true
+
+jobs:
+  install-and-run:
+    runs-on: ubuntu-latest
+    env:
+      # change PORT if your app listens on a different port
+      PORT: 3000
+      # change HEALTH_PATH if your app has a different health endpoint
+      HEALTH_PATH: "/"
+      # how many seconds to wait between retries
+      HEALTH_RETRY_DELAY: 1
+      # number of retries for healthcheck
+      HEALTH_RETRIES: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Build (if present)
+        run: npm run build --if-present
+
+      - name: Start app in background
+        run: |
+          # Start the app in background and record its PID so we can stop it later.
+          # Adjust the start command if your app uses a different script (e.g. "npm run dev").
+          npm start &
+          echo $! > .app_pid
+          # give it a moment to start
+          sleep 2
+
+      - name: Wait for app to become healthy
+        # This step tries to curl the health endpoint until it succeeds or retries exhausted.
+        run: |
+          set -e
+          url="http://localhost:${PORT}${HEALTH_PATH}"
+          echo "Probing ${url}"
+          i=0
+          until curl --fail --silent --show-error "$url" || [ $i -ge $HEALTH_RETRIES ]; do
+            i=$((i+1))
+            echo "Waiting for app... attempt $i/${HEALTH_RETRIES}"
+            sleep $HEALTH_RETRY_DELAY
+          done
+          if [ $i -ge $HEALTH_RETRIES ]; then
+            echo "App did not become healthy within retries; failing job."
+            # Dump listening processes for debugging
+            ss -ltnp || true
+            cat .app_pid || true
+            exit 1
+          fi
+          echo "App is healthy (responded to ${url})."
+
+      - name: Run tests / smoke checks (if present)
+        run: npm test --if-present
+
+      - name: Stop app
+        if: always()
+        run: |
+          if [ -f .app_pid ]; then
+            pid=$(cat .app_pid)
+            echo "Stopping app PID $pid"
+            kill "$pid" || true
+            # wait a moment for process to stop
+            sleep 1
+            # ensure cleaned
+            if ps -p "$pid" > /dev/null 2>&1; then
+              echo "Process $pid still running; attempting kill -9"
+              kill -9 "$pid" || true
+            fi
+            rm -f .app_pid
+          else
+            echo "No .app_pid found; nothing to stop."
+          fi
