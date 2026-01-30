@@ -1900,7 +1900,7 @@ export default function App() {
     const u = await puter.auth.getUser();
     setUser(u);
     addLog(`Welcome ${u.username}`);
-  }, [puter, addLog]);
+  }, [puter]);
 
   // Build and deploy app from prompt or template
   const buildAndDeploy = useCallback(
