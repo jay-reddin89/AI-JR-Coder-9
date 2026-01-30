@@ -28,9 +28,25 @@ function useDebounce(value, delay) {
 
 // Log list component
 function LogPanel({ log }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className="log-panel bg-[#e8e8e8] shadow-[inset_4px_4px_8px_#c5c5c5,inset_-4px_-4px_8px_#ffffff] rounded-2xl p-4">
-      <div className="text-[#666] font-mono text-xs space-y-1 max-h-32 overflow-y-auto">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[#666] font-mono text-xs font-bold">
+          Build Logs ({log.length})
+        </span>
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-[#666] hover:text-[#333] text-xs font-bold transition-colors"
+          title={isExpanded ? "Collapse" : "Expand"}
+        >
+          {isExpanded ? "▼" : "▶"}
+        </button>
+      </div>
+      <div className={`text-[#666] font-mono text-xs space-y-1 overflow-y-auto transition-all ${
+        isExpanded ? "max-h-96" : "max-h-32"
+      }`}>
         {log.map((l, i) => (
           <div
             key={i}
@@ -1875,7 +1891,7 @@ export default function App() {
         setModels(list);
       })
       .catch(() => {});
-  }, [addLog]);
+  }, []);
 
   // Sign in the user through Puter auth
   const signIn = useCallback(async () => {
@@ -1884,7 +1900,7 @@ export default function App() {
     const u = await puter.auth.getUser();
     setUser(u);
     addLog(`Welcome ${u.username}`);
-  }, [puter, addLog]);
+  }, [puter]);
 
   // Build and deploy app from prompt or template
   const buildAndDeploy = useCallback(
@@ -1902,11 +1918,12 @@ export default function App() {
       setShowTemplates(false);
 
       try {
-        addLog(`Model: ${model}`);
+        addLog(`🤖 Model: ${model}`);
+        addLog(`📦 Provider: ${activeProvider}`);
         addLog(
           isIterative
-            ? "Updating app with new instructions..."
-            : "Generating code...",
+            ? "♻️ Updating app with new instructions..."
+            : "🔄 Generating code...",
         );
 
         // System prompt to instruct AI for proper html app generation
@@ -1930,6 +1947,7 @@ RULES:
         let code = "";
         if (activeProvider === "Puter") {
           // Streaming implementation for Puter AI
+          addLog("⏳ Waiting for AI response...");
           const stream = await puter.ai.chat(
             [
               { role: "system", content: systemPrompt },
@@ -1939,16 +1957,24 @@ RULES:
           );
 
           let fullCode = "";
+          let chunkCount = 0;
+          addLog("📝 Receiving code stream...");
           for await (const part of stream) {
             if (part?.text) {
               fullCode += part.text;
+              chunkCount++;
               // Update editor live
               setEditCode(fullCode);
               updateFileContent(fullCode);
+              if (chunkCount % 10 === 0) {
+                addLog(`📨 Received ${fullCode.length} chars...`);
+              }
             }
           }
           code = fullCode;
+          addLog(`✓ Stream complete (${chunkCount} chunks)`);
         } else if (activeProvider === "Pollinations") {
+          addLog("⏳ Waiting for Pollinations API...");
           const pollKey = apiKeys["Pollinations"];
           const url = `https://gen.pollinations.ai/text/${encodeURIComponent(systemPrompt + "\n\n" + userPrompt)}?model=${model}&json=true`;
 
@@ -1967,6 +1993,7 @@ RULES:
             );
           }
 
+          addLog("📨 Response received, processing...");
           const text = await res.text();
           try {
             const data = JSON.parse(text);
@@ -1978,8 +2005,11 @@ RULES:
             // If not JSON, use the raw text as code
             code = text;
           }
+          setEditCode(code);
+          updateFileContent(code);
         }
 
+        addLog("🔍 Cleaning up code...");
         code = code
           .replace(/^```(?:html|js|javascript)?\n?/i, "")
           .replace(/\n?```$/g, "")
@@ -1991,19 +2021,22 @@ RULES:
         if (!code.toLowerCase().includes("<!doctype html>"))
           throw new Error("Invalid HTML");
 
-        addLog(`Generated ${code.length} bytes`);
+        addLog(`✓ Generated ${code.length} bytes of HTML`);
 
-        addLog("Updating files...");
+        addLog("💾 Updating files...");
         const dirName = selectedApp?.dir || `app_${Date.now()}`;
-        if (!selectedApp) await puter.fs.mkdir(dirName);
+        if (!selectedApp) {
+          addLog(`📁 Creating directory: ${dirName}`);
+          await puter.fs.mkdir(dirName);
+        }
         await puter.fs.write(`${dirName}/index.html`, code);
-        addLog(`Wrote to ${dirName}/index.html`);
+        addLog(`✓ Wrote to ${dirName}/index.html`);
 
         let hostedUrl = selectedApp?.hostedUrl;
         let subdomain = selectedApp?.subdomain;
 
         if (!selectedApp) {
-          addLog("Creating hosted site...");
+          addLog("🌐 Creating hosted site...");
           subdomain =
             appName
               .trim()
@@ -2011,14 +2044,17 @@ RULES:
               .replace(/[^a-z0-9-]/g, "") || puter.randName();
           const site = await puter.hosting.create(subdomain, dirName);
           hostedUrl = `https://${site.subdomain}.puter.site`;
-          addLog(`Hosted at: ${hostedUrl}`);
+          addLog(`✓ Hosted at: ${hostedUrl}`);
         } else {
-          addLog("Redeploying site...");
+          addLog("♻️ Redeploying site...");
           // Ensure hosting is up to date
           try {
             const site = await puter.hosting.create(subdomain, dirName);
             hostedUrl = `https://${site.subdomain}.puter.site`;
-          } catch (e) {}
+            addLog(`✓ Redeployment complete`);
+          } catch (e) {
+            addLog(`⚠️ Hosting update: ${e.message}`);
+          }
         }
 
         const finalAppName = isIterative
@@ -2029,7 +2065,7 @@ RULES:
           : appTitle.trim() || finalPrompt.slice(0, 50);
 
         if (!isIterative) {
-          addLog("Registering Puter app...");
+          addLog("📦 Registering Puter app...");
           let puterApp;
           try {
             puterApp = await puter.apps.create({
@@ -2040,9 +2076,9 @@ RULES:
               maximizeOnStart: true,
               dedupeName: true,
             });
-            addLog(`App registered: ${puterApp.name}`);
+            addLog(`✓ App registered: ${puterApp.name}`);
           } catch (appErr) {
-            addLog(`Name taken, using random...`);
+            addLog(`⚠️ Name taken, using random...`);
             const randomName = puter.randName();
             puterApp = await puter.apps.create({
               name: randomName,
@@ -2051,11 +2087,11 @@ RULES:
               description: finalPrompt,
               maximizeOnStart: true,
             });
-            addLog(`App registered: ${puterApp.name}`);
+            addLog(`✓ App registered: ${puterApp.name}`);
           }
         }
 
-        addLog("Saving to database...");
+        addLog("💾 Saving to database...");
         const newVersion = (selectedApp?.version || 0) + 1;
 
         const appDoc = {
@@ -2104,7 +2140,7 @@ RULES:
         }
         setPrompt("");
         setSelectedTemplate(null);
-        addLog("✅ Complete!");
+        addLog("✅ Complete! Opening app...");
         window.open(hostedUrl, "_blank");
       } catch (err) {
         addLog(`❌ Error: ${err.message}`);
@@ -2184,7 +2220,7 @@ RULES:
       addLog(`❌ Error: ${err.message}`);
     }
     setGenerating(false);
-  }, [selectedApp, editCode, puter, database, addLog]);
+  }, [selectedApp, editCode, puter, database]);
 
   // Bulk delete selected apps
   const bulkDelete = useCallback(async () => {
@@ -2205,7 +2241,7 @@ RULES:
       addLog(`Restored v${version.version}`);
       setShowVersions(false);
     },
-    [selectedApp, addLog],
+    [selectedApp],
   );
 
   // Export all apps as JSON file download
@@ -3265,14 +3301,6 @@ RULES:
                 {/* Code Editor - Always visible so users can paste code */}
                 <div className="h-[520px] bg-white">
                   <div className="relative h-full">
-                    {generating && (
-                      <div className="code-loading-overlay">
-                        <div className="code-spinner"></div>
-                        <p className="mt-4 text-sm font-bold text-[#666]">
-                          Generating code...
-                        </p>
-                      </div>
-                    )}
                     <Editor
                       height="100%"
                       defaultLanguage="html"
@@ -3292,14 +3320,14 @@ RULES:
                         updateFileContent(value);
                       }}
                       options={{
-                        minimap: { enabled: false },
+                        minimap: { enabled: true, side: "right" },
                         fontSize: 12,
                         wordWrap: "on",
                         automaticLayout: true,
                         scrollBeyondLastLine: false,
                         padding: { top: 16, bottom: 16 },
                         lineNumbers: "on",
-                        scrollbar: { vertical: "hidden", horizontal: "hidden" },
+                        scrollbar: { vertical: "auto", horizontal: "auto" },
                       }}
                     />
                     <div className="absolute bottom-2 right-2 text-[#666] text-xs z-10 bg-black/5 px-1 rounded">
