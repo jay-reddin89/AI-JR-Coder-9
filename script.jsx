@@ -2023,17 +2023,20 @@ RULES:
 
         addLog(`✓ Generated ${code.length} bytes of HTML`);
 
-        addLog("Updating files...");
+        addLog("💾 Updating files...");
         const dirName = selectedApp?.dir || `app_${Date.now()}`;
-        if (!selectedApp) await puter.fs.mkdir(dirName);
+        if (!selectedApp) {
+          addLog(`📁 Creating directory: ${dirName}`);
+          await puter.fs.mkdir(dirName);
+        }
         await puter.fs.write(`${dirName}/index.html`, code);
-        addLog(`Wrote to ${dirName}/index.html`);
+        addLog(`✓ Wrote to ${dirName}/index.html`);
 
         let hostedUrl = selectedApp?.hostedUrl;
         let subdomain = selectedApp?.subdomain;
 
         if (!selectedApp) {
-          addLog("Creating hosted site...");
+          addLog("🌐 Creating hosted site...");
           subdomain =
             appName
               .trim()
@@ -2041,14 +2044,17 @@ RULES:
               .replace(/[^a-z0-9-]/g, "") || puter.randName();
           const site = await puter.hosting.create(subdomain, dirName);
           hostedUrl = `https://${site.subdomain}.puter.site`;
-          addLog(`Hosted at: ${hostedUrl}`);
+          addLog(`✓ Hosted at: ${hostedUrl}`);
         } else {
-          addLog("Redeploying site...");
+          addLog("♻️ Redeploying site...");
           // Ensure hosting is up to date
           try {
             const site = await puter.hosting.create(subdomain, dirName);
             hostedUrl = `https://${site.subdomain}.puter.site`;
-          } catch (e) {}
+            addLog(`✓ Redeployment complete`);
+          } catch (e) {
+            addLog(`⚠️ Hosting update: ${e.message}`);
+          }
         }
 
         const finalAppName = isIterative
@@ -2059,7 +2065,7 @@ RULES:
           : appTitle.trim() || finalPrompt.slice(0, 50);
 
         if (!isIterative) {
-          addLog("Registering Puter app...");
+          addLog("📦 Registering Puter app...");
           let puterApp;
           try {
             puterApp = await puter.apps.create({
@@ -2070,9 +2076,9 @@ RULES:
               maximizeOnStart: true,
               dedupeName: true,
             });
-            addLog(`App registered: ${puterApp.name}`);
+            addLog(`✓ App registered: ${puterApp.name}`);
           } catch (appErr) {
-            addLog(`Name taken, using random...`);
+            addLog(`⚠️ Name taken, using random...`);
             const randomName = puter.randName();
             puterApp = await puter.apps.create({
               name: randomName,
@@ -2081,11 +2087,11 @@ RULES:
               description: finalPrompt,
               maximizeOnStart: true,
             });
-            addLog(`App registered: ${puterApp.name}`);
+            addLog(`✓ App registered: ${puterApp.name}`);
           }
         }
 
-        addLog("Saving to database...");
+        addLog("💾 Saving to database...");
         const newVersion = (selectedApp?.version || 0) + 1;
 
         const appDoc = {
