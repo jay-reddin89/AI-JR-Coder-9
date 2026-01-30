@@ -3265,14 +3265,6 @@ RULES:
                 {/* Code Editor - Always visible so users can paste code */}
                 <div className="h-[520px] bg-white">
                   <div className="relative h-full">
-                    {generating && (
-                      <div className="code-loading-overlay">
-                        <div className="code-spinner"></div>
-                        <p className="mt-4 text-sm font-bold text-[#666]">
-                          Generating code...
-                        </p>
-                      </div>
-                    )}
                     <Editor
                       height="100%"
                       defaultLanguage="html"
@@ -3292,14 +3284,14 @@ RULES:
                         updateFileContent(value);
                       }}
                       options={{
-                        minimap: { enabled: false },
+                        minimap: { enabled: true, side: "right" },
                         fontSize: 12,
                         wordWrap: "on",
                         automaticLayout: true,
                         scrollBeyondLastLine: false,
                         padding: { top: 16, bottom: 16 },
                         lineNumbers: "on",
-                        scrollbar: { vertical: "hidden", horizontal: "hidden" },
+                        scrollbar: { vertical: "auto", horizontal: "auto" },
                       }}
                     />
                     <div className="absolute bottom-2 right-2 text-[#666] text-xs z-10 bg-black/5 px-1 rounded">
