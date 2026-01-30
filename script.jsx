@@ -1974,6 +1974,7 @@ RULES:
           code = fullCode;
           addLog(`✓ Stream complete (${chunkCount} chunks)`);
         } else if (activeProvider === "Pollinations") {
+          addLog("⏳ Waiting for Pollinations API...");
           const pollKey = apiKeys["Pollinations"];
           const url = `https://gen.pollinations.ai/text/${encodeURIComponent(systemPrompt + "\n\n" + userPrompt)}?model=${model}&json=true`;
 
@@ -1992,6 +1993,7 @@ RULES:
             );
           }
 
+          addLog("📨 Response received, processing...");
           const text = await res.text();
           try {
             const data = JSON.parse(text);
@@ -2003,8 +2005,11 @@ RULES:
             // If not JSON, use the raw text as code
             code = text;
           }
+          setEditCode(code);
+          updateFileContent(code);
         }
 
+        addLog("🔍 Cleaning up code...");
         code = code
           .replace(/^```(?:html|js|javascript)?\n?/i, "")
           .replace(/\n?```$/g, "")
@@ -2016,7 +2021,7 @@ RULES:
         if (!code.toLowerCase().includes("<!doctype html>"))
           throw new Error("Invalid HTML");
 
-        addLog(`Generated ${code.length} bytes`);
+        addLog(`✓ Generated ${code.length} bytes of HTML`);
 
         addLog("Updating files...");
         const dirName = selectedApp?.dir || `app_${Date.now()}`;
