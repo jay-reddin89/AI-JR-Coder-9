@@ -1947,6 +1947,7 @@ RULES:
         let code = "";
         if (activeProvider === "Puter") {
           // Streaming implementation for Puter AI
+          addLog("⏳ Waiting for AI response...");
           const stream = await puter.ai.chat(
             [
               { role: "system", content: systemPrompt },
@@ -1956,15 +1957,22 @@ RULES:
           );
 
           let fullCode = "";
+          let chunkCount = 0;
+          addLog("📝 Receiving code stream...");
           for await (const part of stream) {
             if (part?.text) {
               fullCode += part.text;
+              chunkCount++;
               // Update editor live
               setEditCode(fullCode);
               updateFileContent(fullCode);
+              if (chunkCount % 10 === 0) {
+                addLog(`📨 Received ${fullCode.length} chars...`);
+              }
             }
           }
           code = fullCode;
+          addLog(`✓ Stream complete (${chunkCount} chunks)`);
         } else if (activeProvider === "Pollinations") {
           const pollKey = apiKeys["Pollinations"];
           const url = `https://gen.pollinations.ai/text/${encodeURIComponent(systemPrompt + "\n\n" + userPrompt)}?model=${model}&json=true`;
