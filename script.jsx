@@ -1918,11 +1918,12 @@ export default function App() {
       setShowTemplates(false);
 
       try {
-        addLog(`Model: ${model}`);
+        addLog(`🤖 Model: ${model}`);
+        addLog(`📦 Provider: ${activeProvider}`);
         addLog(
           isIterative
-            ? "Updating app with new instructions..."
-            : "Generating code...",
+            ? "♻️ Updating app with new instructions..."
+            : "🔄 Generating code...",
         );
 
         // System prompt to instruct AI for proper html app generation
