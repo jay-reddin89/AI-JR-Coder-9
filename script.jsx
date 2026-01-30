@@ -2241,7 +2241,7 @@ RULES:
       addLog(`Restored v${version.version}`);
       setShowVersions(false);
     },
-    [selectedApp, addLog],
+    [selectedApp],
   );
 
   // Export all apps as JSON file download
