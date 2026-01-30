@@ -2140,7 +2140,7 @@ RULES:
         }
         setPrompt("");
         setSelectedTemplate(null);
-        addLog("✅ Complete!");
+        addLog("✅ Complete! Opening app...");
         window.open(hostedUrl, "_blank");
       } catch (err) {
         addLog(`❌ Error: ${err.message}`);
