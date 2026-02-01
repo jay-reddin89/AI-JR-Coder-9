@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: './', // For GitHub Pages
   resolve: {
     alias: {
       // Fixes the node:fs warning by aliasing to a browser-safe module
