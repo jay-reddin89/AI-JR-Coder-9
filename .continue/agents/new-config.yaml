@@ -1,0 +1,231 @@
+name: Jamie Bot
+version: 1.0.4
+schema: v1
+models:
+  - name: claude-fast
+    model: claude-haiku-4.5
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    roles:
+      - chat
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: claude
+    model: claude-sonnet-4.5
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: gemini
+    model: gemini-3-flash
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: gemini-large
+    model: gemini-3-pro
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: grok
+    model: grok-4-fast
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+    provider: openai
+  - name: nova-fast
+    model: amazon-nova-micro
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+    provider: openai
+  - name: openai
+    model: gpt-5-mini
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: openai-fast
+    model: gpt-5-nano
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: openai-large
+    model: gpt-5.2
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: gemini-fast
+    model: gemini-2.5-flash
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+    provider: openai
+  - name: qwen-coder
+    model: Qwen3 Coder 30B
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: mistral
+    model: Mistral Small 3.2 24B
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: deepseek
+    model: deepseek v3
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: kimi
+    model: kimi-k2.5
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: gemini-legacy
+    model: gemini-2.5-pro
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: glm
+    model: glm-4.7
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: minimax
+    model: minimax-m2.1
+    apiKey: sk_KNnbOr5uciLMOY6Hd2AuJ3IjhGb9xcDv
+    apiBase: https://gen.pollinations.ai/v1
+    capabilities:
+      - tool_use
+      - image_input
+    provider: openai
+  - name: arcee-ai/trinity-large-preview:free
+    model: arcee-ai/trinity-large-preview:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: upstage/solar-pro-3:free
+    model: upstage/solar-pro-3:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: tngtech/deepseek-r1t2-chimera:free
+    model: tngtech/deepseek-r1t2-chimera:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: nvidia/nemotron-3-nano-30b-a3b:free
+    model: nvidia/nemotron-3-nano-30b-a3b:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: openai/gpt-oss-120b:free
+    model: openai/gpt-oss-120b:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: qwen/qwen3-coder:free
+    model: qwen/qwen3-coder:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: qwen/qwen3-next-80b-a3b-instruct:free
+    model: qwen/qwen3-next-80b-a3b-instruct:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: z-ai/glm-4.5-air:free
+    model: z-ai/glm-4.5-air:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: moonshotai/kimi-k2:free
+    model: moonshotai/kimi-k2:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: arcee-ai/trinity-mini:free
+    model: arcee-ai/trinity-mini:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: liquid/lfm-2.5-1.2b-thinking:free
+    model: liquid/lfm-2.5-1.2b-thinking:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+  - name: nousresearch/hermes-3-llama-3.1-405b:free
+    model: nousresearch/hermes-3-llama-3.1-405b:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    provider: openrouter
+context:
+  - uses: continuedev/diff-context
+  - uses: continuedev/terminal-context
+  - uses: continuedev/file-context
+mcpServers:
+  - uses: upstash/context7-mcp
+rules:
+  - uses: continuedev/spec
