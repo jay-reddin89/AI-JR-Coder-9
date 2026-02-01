@@ -1,9 +1,5 @@
 {
-  "build": {
-    "command": "npm run build",
-    "directory": "dist"
-  },
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "build": "npm run build",
+  "output": "dist",
+  "install": "npm ci"
 }
