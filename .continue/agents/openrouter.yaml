@@ -1,0 +1,100 @@
+name: OpenRouter Free Coding Model1
+version: 1.0.0
+schema: v1
+models:
+  - name: Trinity Large
+    provider: openrouter
+    model: arcee-ai/trinity-large-preview:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    roles:
+      - autocomplete
+      - chat
+      - edit
+      - apply
+    temperature: 0.1
+    maxTokens: 131000
+  - name: Solar Pro 3 
+    provider: openrouter
+    model: upstage/solar-pro-3:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    roles:
+      - autocomplete
+      - chat
+      - edit
+      - apply
+    temperature: 0.1
+    maxTokens: 128000
+  - name: DeepSeek r1t2
+    provider: openrouter
+    model: tngtech/deepseek-r1t2-chimera:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    roles:
+      - autocomplete
+      - chat
+      - edit
+      - apply
+    temperature: 0.1
+    maxTokens: 164000
+  - name: Nemotron 3 Nano
+    provider: openrouter
+    model: nvidia/nemotron-3-nano-30b-a3b:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    roles:
+      - autocomplete
+      - chat
+      - edit
+      - apply
+    temperature: 0.1
+    maxTokens: 128000
+  - name: glm-4.5-air
+    provider: openrouter
+    model: z-ai/glm-4.5-air:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    roles:
+      - autocomplete
+      - chat
+      - edit
+      - apply
+    temperature: 0.1
+    maxTokens: 131000
+  - name: Trinity Mini
+    provider: openrouter
+    model: arcee-ai/trinity-mini:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    roles:
+
+      - chat
+      - edit
+      - apply
+    temperature: 0.1
+    maxTokens: 131000
+  - name: lfm-2.5-1
+    provider: openrouter
+    model: liquid/lfm-2.5-1.2b-thinking:free
+    apiKey: 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
+    apiBase: https://openrouter.ai/api/v1
+    capabilities:
+      - tool_use
+    roles:
+      - autocomplete
+      - chat
+      - edit
+      - apply
+    temperature: 0.1
+    maxTokens: 33000
