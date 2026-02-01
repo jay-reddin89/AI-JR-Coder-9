@@ -1896,7 +1896,9 @@ export default function App() {
   // Sign in the user through Puter auth
   const signIn = useCallback(async () => {
     if (!puter) return;
-    await puter.auth.signIn();
+    await puter.auth.signIn({
+      redirect_url: window.location.href
+    });
     const u = await puter.auth.getUser();
     setUser(u);
     addLog(`Welcome ${u.username}`);
