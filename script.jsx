@@ -2012,17 +2012,40 @@ RULES:
         }
 
         addLog("🔍 Cleaning up code...");
+        // More robust code cleaning for various markdown formats
         code = code
-          .replace(/^```(?:html|js|javascript)?\n?/i, "")
-          .replace(/\n?```$/g, "")
-          .replace(/```html?\n?/gi, "")
-          .replace(/```\n?/g, "")
+          // Remove common markdown code block formats
+          .replace(/^```(?:html|js|javascript)?\s*\n?([\s\S]*?)\n?```$/gi, '$1')
+          .replace(/^```\s*\n?([\s\S]*?)\n?```$/gi, '$1')
+          // Remove single backtick wrapped code
+          .replace(/^`([\s\S]*?)`$/gi, '$1')
+          // Clean up any remaining markdown artifacts
+          .replace(/^\s*```\s*$/gm, '')
+          .replace(/\n{3,}/g, '\n\n')
           .trim();
-        const start = code.search(/<!doctype\s+html>/i);
-        if (start > 0) code = code.slice(start);
-        if (!code.toLowerCase().includes("<!doctype html>"))
-          throw new Error("Invalid HTML");
-
+        
+        // Ensure proper HTML structure
+        const doctypeMatch = code.match(/<!doctype\s+html[^>]*>/i);
+        if (doctypeMatch) {
+          // Extract from DOCTYPE onwards
+          const doctypeIndex = code.indexOf(doctypeMatch[0]);
+          code = code.substring(doctypeIndex);
+        } else if (!code.toLowerCase().includes('<!doctype html>')) {
+          // If no DOCTYPE found, wrap the content in basic HTML structure
+          addLog("⚠️ No DOCTYPE found, wrapping in HTML structure");
+          code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${appTitle || 'Generated App'}</title>
+</head>
+<body>
+${code}
+</body>
+</html>`;
+        }
+        
         addLog(`✓ Generated ${code.length} bytes of HTML`);
 
         addLog("💾 Updating files...");
@@ -2347,7 +2370,7 @@ RULES:
   return (
     <div className="min-h-screen transition-colors duration-300 p-4 md:p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header including app stats and user login */}
+{/* Header including app stats and user login */}
         <div className={cn(neu, "rounded-[20px] p-3 space-y-3")}>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-4 min-w-0">
