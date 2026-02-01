@@ -1,3 +1,26 @@
+/* ============================================
+   CSS Design Tokens - Panel Layout Consistency
+   ============================================ */
+
+:root {
+  /* Spacing Tokens - Panel Gaps */
+  --spacing-none: 0;
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
+
+  /* Panel CSS Variables */
+  --panel-header-height: 48px;
+  --panel-padding: 16px;
+  --panel-border-radius: 12px;
+  --panel-background: var(--bg-secondary, #f0f0f0);
+
+  /* Breakpoint Variables */
+  --breakpoint-small: 576px;
+  --breakpoint-medium: 768px;
+  --breakpoint-large: 1024px;
+}
+
 /* Basic body styling */
 body {
   margin: 0;
@@ -362,4 +385,497 @@ iframe::-webkit-scrollbar {
 
 .panel-collapsed .collapse-btn-visible {
   display: flex !important;
+}
+
+/* ============================================
+   PanelContainer Component Styles
+   ============================================ */
+
+/* Base PanelContainer styles */
+.panel-container {
+  display: flex;
+  width: 100%;
+}
+
+/* Layout direction modifiers */
+.panel-container--horizontal {
+  flex-direction: row;
+}
+
+.panel-container--vertical {
+  flex-direction: column;
+}
+
+/* Gap spacing modifiers using design tokens */
+.panel-container--gap-none {
+  gap: var(--spacing-none);
+}
+
+.panel-container--gap-small {
+  gap: var(--spacing-small);
+}
+
+.panel-container--gap-medium {
+  gap: var(--spacing-medium);
+}
+
+.panel-container--gap-large {
+  gap: var(--spacing-large);
+}
+
+/* Width modifiers */
+.panel-container--width-auto {
+  width: auto;
+}
+
+.panel-container--width-full {
+  width: 100%;
+}
+
+/* Align items modifiers */
+.panel-container--align-start {
+  align-items: flex-start;
+}
+
+.panel-container--align-center {
+  align-items: center;
+}
+
+.panel-container--align-end {
+  align-items: flex-end;
+}
+
+.panel-container--align-stretch {
+  align-items: stretch;
+}
+
+/* ============================================
+   Responsive Behavior - Task 5 Implementation
+   ============================================ */
+
+/* Responsive modifier - transitions for smooth layout changes */
+.panel-container--responsive {
+  /* Smooth transitions for layout changes */
+  transition: flex-direction 300ms ease, gap 300ms ease, padding 300ms ease;
+}
+
+/* Small screens (< 576px): Stack vertically */
+@media (max-width: 575px) {
+  .panel-container--responsive {
+    flex-direction: column !important;
+  }
+
+  /* When in responsive mode, panels should take full width */
+  .panel-container--responsive > .panel {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  /* Adjust gap spacing for mobile */
+  .panel-container--responsive.panel-container--gap-small {
+    gap: calc(var(--spacing-small) / 2);
+  }
+
+  .panel-container--responsive.panel-container--gap-medium {
+    gap: calc(var(--spacing-medium) / 2);
+  }
+
+  .panel-container--responsive.panel-container--gap-large {
+    gap: var(--spacing-medium);
+  }
+}
+
+/* Medium screens (576px - 767px): Maintain layout with adjusted spacing */
+@media (min-width: 576px) and (max-width: 767px) {
+  .panel-container--responsive {
+    /* Keep the original layout direction but allow wrapping */
+    flex-wrap: wrap;
+  }
+
+  /* Panels can wrap on medium screens */
+  .panel-container--responsive > .panel {
+    flex: 1 1 calc(50% - var(--spacing-medium));
+    min-width: 280px;
+  }
+}
+
+/* Large screens (>= 768px): Full horizontal layout */
+@media (min-width: 768px) {
+  .panel-container--responsive {
+    /* Restore original layout direction */
+    flex-wrap: nowrap;
+  }
+
+  .panel-container--responsive > .panel {
+    flex: 1 1 auto;
+    min-width: auto;
+  }
+}
+
+/* Extra large screens (>= 1024px): Enhanced spacing */
+@media (min-width: 1024px) {
+  .panel-container--responsive.panel-container--gap-large {
+    gap: var(--spacing-large);
+  }
+}
+
+/* PanelComponent responsive adaptations */
+@media (max-width: 575px) {
+  /* Adjust panel padding on mobile */
+  .panel-container--responsive .panel {
+    border-radius: calc(var(--panel-border-radius) / 2);
+  }
+
+  .panel-container--responsive .panel__header {
+    height: auto;
+    min-height: var(--panel-header-height);
+    padding: calc(var(--panel-padding) / 2) var(--panel-padding);
+  }
+
+  .panel-container--responsive .panel__body {
+    padding: calc(var(--panel-padding) / 2);
+  }
+
+  .panel-container--responsive .panel__footer {
+    padding: calc(var(--panel-padding) / 2);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .panel-container--responsive > .panel {
+    /* Slightly larger touch targets on mobile */
+    min-height: 44px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .panel-container--responsive {
+    transition: none;
+  }
+
+  .panel-container--responsive > .panel {
+    transition: none;
+  }
+}
+
+/* ============================================
+   Spacing and Gap Control System - Task 6
+   ============================================ */
+
+/* Nested spacing multiplier variables */
+:root {
+  --nested-spacing-multiplier: 0.5;
+  --nested-gap-multiplier: 0.5;
+}
+
+/* ============================================
+   PanelContainer Gap Classes
+   ============================================ */
+
+/* Gap tokens mapping to CSS custom properties */
+.panel-container--gap-none {
+  gap: var(--spacing-none);
+}
+
+.panel-container--gap-small {
+  gap: var(--spacing-small);
+}
+
+.panel-container--gap-medium {
+  gap: var(--spacing-medium);
+}
+
+.panel-container--gap-large {
+  gap: var(--spacing-large);
+}
+
+/* Edge-to-edge rendering (no gap) - remove default margins/padding */
+.panel-container--gap-none > .panel {
+  margin: 0;
+}
+
+/* Border collapse approach for edge-to-edge panels */
+.panel-container--gap-none > .panel:not(:first-child) {
+  border-left: none;
+  border-top: none;
+}
+
+.panel-container--gap-none.panel-container--horizontal > .panel:not(:first-child) {
+  border-left: none;
+}
+
+.panel-container--gap-none.panel-container--vertical > .panel:not(:first-child) {
+  border-top: none;
+}
+
+/* ============================================
+   Panel Edge-to-Edge Modifier
+   ============================================ */
+
+/* Remove internal spacing for edge-to-edge mode */
+.panel--edge-to-edge {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.panel--edge-to-edge .panel__header {
+  border-radius: 0;
+}
+
+.panel--edge-to-edge .panel__body {
+  padding: 0;
+}
+
+.panel--edge-to-edge .panel__footer {
+  border-radius: 0;
+}
+
+/* When panel is inside a gap-none container, apply edge-to-edge styling */
+.panel-container--gap-none > .panel {
+  border-radius: 0;
+}
+
+.panel-container--gap-none > .panel .panel__header {
+  border-radius: 0;
+}
+
+/* ============================================
+   Nested Panel Spacing
+   ============================================ */
+
+/* Nested panel modifier - reduce spacing by 50% */
+.panel--nested {
+  --panel-padding-nested: calc(var(--panel-padding) * var(--nested-spacing-multiplier));
+  --spacing-small-nested: calc(var(--spacing-small) * var(--nested-gap-multiplier));
+  --spacing-medium-nested: calc(var(--spacing-medium) * var(--nested-gap-multiplier));
+  --spacing-large-nested: calc(var(--spacing-large) * var(--nested-gap-multiplier));
+}
+
+.panel--nested .panel__header {
+  height: calc(var(--panel-header-height) * var(--nested-spacing-multiplier));
+  min-height: calc(var(--panel-header-height) * var(--nested-spacing-multiplier));
+  max-height: calc(var(--panel-header-height) * var(--nested-spacing-multiplier));
+  padding: 0 calc(var(--panel-padding) * var(--nested-spacing-multiplier));
+}
+
+.panel--nested .panel__body {
+  padding: calc(var(--panel-padding) * var(--nested-spacing-multiplier));
+}
+
+.panel--nested .panel__footer {
+  padding: calc(var(--panel-padding) * var(--nested-spacing-multiplier) / 2) calc(var(--panel-padding) * var(--nested-spacing-multiplier));
+}
+
+/* ============================================
+   Automatic Nested Panel Styling
+   ============================================ */
+
+/* When a panel is inside another panel's body, automatically apply nested styling */
+.panel__body .panel {
+  /* Reduce margin for nested panels */
+  margin: calc(var(--spacing-small) * var(--nested-gap-multiplier)) 0;
+}
+
+/* First nested panel should not have top margin */
+.panel__body .panel:first-child {
+  margin-top: 0;
+}
+
+/* Last nested panel should not have bottom margin */
+.panel__body .panel:last-child {
+  margin-bottom: 0;
+}
+
+/* Nested panel container gap reduction */
+.panel__body .panel-container {
+  gap: calc(var(--spacing-medium) * var(--nested-gap-multiplier));
+}
+
+.panel__body .panel-container--gap-none {
+  gap: var(--spacing-none);
+}
+
+.panel__body .panel-container--gap-small {
+  gap: calc(var(--spacing-small) * var(--nested-gap-multiplier));
+}
+
+.panel__body .panel-container--gap-medium {
+  gap: calc(var(--spacing-medium) * var(--nested-gap-multiplier));
+}
+
+.panel__body .panel-container--gap-large {
+  gap: calc(var(--spacing-large) * var(--nested-gap-multiplier));
+}
+
+/* ============================================
+   Responsive Spacing Adjustments
+   ============================================ */
+
+/* Small screens: reduce gap spacing */
+@media (max-width: 575px) {
+  .panel-container--gap-small {
+    gap: calc(var(--spacing-small) / 2);
+  }
+
+  .panel-container--gap-medium {
+    gap: calc(var(--spacing-medium) / 2);
+  }
+
+  .panel-container--gap-large {
+    gap: var(--spacing-medium);
+  }
+
+  /* Nested panels get even smaller spacing on mobile */
+  .panel--nested .panel__body {
+    padding: calc(var(--panel-padding) * var(--nested-spacing-multiplier) / 2);
+  }
+}
+
+/* Large screens: enhanced spacing */
+@media (min-width: 1024px) {
+  .panel-container--gap-large {
+    gap: var(--spacing-large);
+  }
+}
+
+/* ============================================
+   PanelComponent Styles
+   ============================================ */
+
+/* Base panel styles */
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-background, var(--bg-secondary, #f0f0f0));
+  border-radius: var(--panel-border-radius, 12px);
+  overflow: hidden;
+  box-shadow: 8px 8px 16px var(--neu-shadow-1, #c5c5c5), -8px -8px 16px var(--neu-shadow-2, #ffffff);
+}
+
+/* Panel Header - consistent height with flexbox alignment */
+.panel__header {
+  flex-shrink: 0;
+  height: var(--panel-header-height, 48px);
+  min-height: var(--panel-header-height, 48px);
+  max-height: var(--panel-header-height, 48px);
+  padding: 0 var(--panel-padding, 16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color, #d1d1d1);
+  background: var(--bg-color, #e8e8e8);
+  box-sizing: border-box;
+}
+
+/* Panel Header Content - left side wrapper */
+.panel__header-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Panel Header Title - title text styling */
+.panel__header-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-color, #1a1a1a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+}
+
+/* Panel Header Actions - right side actions wrapper */
+.panel__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Panel Header Actions - button styling */
+.panel__header-actions button,
+.panel__header-actions .panel__action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  font-size: 12px;
+}
+
+.panel__header-actions button:hover,
+.panel__header-actions .panel__action-btn:hover {
+  background: var(--bg-secondary, #f0f0f0);
+  color: var(--text-color, #1a1a1a);
+}
+
+/* Panel Header with only content (no actions) */
+.panel__header--content-only {
+  justify-content: flex-start;
+}
+
+/* Panel Header with only actions (no content) */
+.panel__header--actions-only {
+  justify-content: flex-end;
+}
+
+/* Panel Body - flex-grow to fill available space */
+.panel__body {
+  flex: 1 1 auto;
+  padding: var(--panel-padding, 16px);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Panel Body - no padding modifier */
+.panel__body--no-padding,
+.panel--no-padding .panel__body {
+  padding: 0;
+}
+
+/* Panel Body - empty state modifier */
+.panel__body--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+}
+
+/* Panel empty text styling */
+.panel__empty-text {
+  color: var(--text-secondary, #888);
+  font-style: italic;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Panel Footer - at the bottom */
+.panel__footer {
+  flex-shrink: 0;
+  padding: calc(var(--panel-padding, 16px) / 2) var(--panel-padding, 16px);
+  border-top: 1px solid var(--border-color, #d1d1d1);
+  background: var(--bg-color, #e8e8e8);
+  display: flex;
+  align-items: center;
+}
+
+/* Neumorphic design variations for panel sections */
+.panel__header {
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.panel__footer {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }

@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
+    "test:visual:report": "playwright show-report"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +26,13 @@
     "use-fireproof": "^0.24.9",
     "vite": "^7.3.1",
     "vite-plugin-node-polyfills": "^0.25.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.5"
   }
 }
