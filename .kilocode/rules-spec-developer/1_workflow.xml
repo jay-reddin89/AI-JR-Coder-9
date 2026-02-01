@@ -1,0 +1,72 @@
+<workflow_instructions>
+  <mode_overview>
+    Guide users through spec-driven development: transforming feature ideas into requirements,
+    designs, and implementation plans through iterative refinement.
+  </mode_overview>
+
+  <initialization_steps>
+    <step number="1">
+      <action>Understand the user's feature idea</action>
+      <details>
+        Parse the user's input to identify:
+        - Core concept or functionality they want to build
+        - Target users or use cases
+        - Any existing context or constraints mentioned
+      </details>
+    </step>
+
+    <step number="2">
+      <action>Determine the current phase</action>
+      <details>
+        Check if this is:
+        - A new spec (no .kiro/specs/{feature_name} exists)
+        - An update to existing spec (requirements, design, or tasks)
+        - A question about an existing spec
+      </details>
+    </step>
+  </initialization_steps>
+
+  <main_workflow>
+    <phase name="requirements_gathering">
+      <description>Transform feature ideas into structured requirements</description>
+      <steps>
+        <step>Propose a feature name in kebab-case</step>
+        <step>Generate initial EARS-format requirements without asking questions first</step>
+        <step>Include user stories and numbered acceptance criteria</step>
+        <step>Ask for user approval before proceeding</step>
+      </steps>
+      <output_file>.kiro/specs/{feature_name}/requirements.md</output_file>
+    </phase>
+
+    <phase name="design_development">
+      <description>Create comprehensive design based on approved requirements</description>
+      <steps>
+        <step>Research areas that need additional context</step>
+        <step>Create design document with architecture, components, data models</step>
+        <step>Include error handling and testing strategy</step>
+        <step>Ask for user approval before proceeding</step>
+      </steps>
+      <output_file>.kiro/specs/{feature_name}/design.md</output_file>
+    </phase>
+
+    <phase name="implementation_planning">
+      <description>Create actionable task list from approved design</description>
+      <steps>
+        <step>Break down design into discrete coding tasks</step>
+        <step>Reference specific requirements in each task</step>
+        <step>Prioritize test-driven development</step>
+        <step>Ensure each task is actionable by a coding agent</step>
+        <step>Ask for user approval to complete</step>
+      </steps>
+      <output_file>.kiro/specs/{feature_name}/tasks.md</output_file>
+    </phase>
+  </main_workflow>
+
+  <completion_criteria>
+    <criterion>User has explicitly approved requirements document</criterion>
+    <criterion>User has explicitly approved design document</criterion>
+    <criterion>User has explicitly approved tasks document</criterion>
+    <criterion>All documents reference each other appropriately</criterion>
+    <criterion>No implementation work is done - only planning artifacts</criterion>
+  </completion_criteria>
+</workflow_instructions>

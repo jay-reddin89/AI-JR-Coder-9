@@ -1,0 +1,192 @@
+<complete_examples>
+  <example name="new_feature_spec_creation">
+    <scenario>
+      User wants to plan a new feature: a notification system for their web app
+    </scenario>
+
+    <user_request>
+      "I want to add a notification system to my web app so users can see alerts and updates"
+    </user_request>
+
+    <workflow>
+      <step number="1">
+        <description>Propose feature name and create requirements</description>
+        <approach>
+          Propose feature name "notification-system"
+          Create .kiro/specs/notification-system/requirements.md with:
+          - Introduction summarizing the feature
+          - User stories in "As a... I want... so that..." format
+          - EARS-format acceptance criteria
+        </approach>
+        <expected_outcome>
+          User sees concrete requirements to react to and refine
+        </expected_outcome>
+      </step>
+
+      <step number="2">
+        <description>Get user approval on requirements</description>
+        <approach>
+          Ask: "Do the requirements look good? If so, we can move on to the design."
+        </approach>
+        <expected_outcome>
+          User approves or provides specific feedback for changes
+        </expected_outcome>
+      </step>
+
+      <step number="3">
+        <description>Create design document</description>
+        <approach>
+          Create .kiro/specs/notification-system/design.md with:
+          - Architecture overview
+          - Components (NotificationService, NotificationStore, UI components)
+          - Data models (Notification, UserPreferences)
+          - Error handling strategy
+          - Testing approach
+        </approach>
+        <expected_outcome>
+          Comprehensive design ready for review
+        </expected_outcome>
+      </step>
+
+      <step number="4">
+        <description>Get user approval on design</description>
+        <approach>
+          Ask: "Does the design look good? If so, we can move on to the implementation plan."
+        </approach>
+        <expected_outcome>
+          User approves or provides specific feedback for changes
+        </expected_outcome>
+      </step>
+
+      <step number="5">
+        <description>Create implementation task list</description>
+        <approach>
+          Create .kiro/specs/notification-system/tasks.md with:
+          - Numbered checkbox tasks
+          - Each task references specific requirements
+          - Tasks are discrete coding steps
+          - Test-driven development approach
+        </approach>
+        <expected_outcome>
+          Actionable implementation plan ready for execution
+        </expected_outcome>
+      </step>
+
+      <step number="6">
+        <description>Get final approval</description>
+        <approach>
+          Ask: "Do the tasks look good?"
+        </approach>
+        <expected_outcome>
+          User can now start executing tasks in Code mode
+        </expected_outcome>
+      </step>
+    </workflow>
+
+    <completion>
+      The notification system spec is complete with requirements.md, design.md, and tasks.md.
+      User can proceed to implementation by opening tasks.md and starting tasks in Code mode.
+    </completion>
+
+    <key_takeaways>
+      <takeaway>Always generate initial drafts proactively</takeaway>
+      <takeaway>Require explicit approval at each phase</takeaway>
+      <takeaway>Keep implementation work for separate workflows</takeaway>
+    </key_takeaways>
+  </example>
+
+  <example name="existing_spec_update">
+    <scenario>
+      User wants to add new requirements to an existing feature spec
+    </scenario>
+
+    <user_request>
+      "I also want to add email notifications to the notification system"
+    </user_request>
+
+    <workflow>
+      <step number="1">
+        <description>Locate existing spec</description>
+        <approach>
+          Find .kiro/specs/notification-system/requirements.md
+        </approach>
+        <expected_outcome>
+          Existing requirements are loaded
+        </expected_outcome>
+      </step>
+
+      <step number="2">
+        <description>Add new requirements</description>
+        <approach>
+          Add new requirement section for email notifications with user story and EARS criteria
+        </approach>
+        <expected_outcome>
+          Updated requirements document
+        </expected_outcome>
+      </step>
+
+      <step number="3">
+        <description>Update design if needed</description>
+        <approach>
+          Review design.md and add email notification components/data models
+        </approach>
+        <expected_outcome>
+          Updated design document
+        </expected_outcome>
+      </step>
+
+      <step number="4">
+        <description>Add implementation tasks</description>
+        <approach>
+          Add new tasks to tasks.md that reference the new email notification requirements
+        </approach>
+        <expected_outcome>
+          Updated task list
+        </expected_outcome>
+      </step>
+    </workflow>
+
+    <completion>
+      The notification system spec is updated with email notification support.
+    </completion>
+
+    <key_takeaways>
+      <takeaway>Existing specs can be incrementally updated</takeaway>
+      <takeaway>All three documents should stay in sync</takeaway>
+    </key_takeaways>
+  </example>
+
+  <example name="clarifying_requirements">
+    <scenario>
+      User provides vague feature request that needs clarification
+    </scenario>
+
+    <user_request>
+      "I want to improve performance"
+    </user_request>
+
+    <workflow>
+      <step number="1">
+        <description>Ask clarifying questions</description>
+        <approach>
+          Ask specific questions like:
+          - "What area needs performance improvement? (API, database, frontend, build time)"
+          - "What are the current performance metrics?"
+          - "What is the target performance goal?"
+        </approach>
+        <expected_outcome>
+          User provides enough context to create initial requirements
+        </expected_outcome>
+      </step>
+    </workflow>
+
+    <completion>
+      Clarified requirements enable proper spec creation.
+    </completion>
+
+    <key_takeaways>
+      <takeaway>Ask clarifying questions when critical ambiguity exists</takeaway>
+      <takeaway>Once clarified, generate initial draft without further questions</takeaway>
+    </key_takeaways>
+  </example>
+</complete_examples>

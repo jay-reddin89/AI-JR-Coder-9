@@ -98,7 +98,11 @@ CREATE INDEX CONCURRENTLY idx_users_email ON users(email);
 - **Database indexing**: Add indexes for WHERE/JOIN columns
 - **CDN**: Serve static assets from CDN
 
-## Files
+## Common Optimizations
 
-- `references/performance_metrics.md` - Key performance metrics reference
-- `scripts/bundle_analyzer.py` - Bundle size analysis script
+- **Code splitting**: Lazy load routes and components
+- **Memoization**: Use React.memo, useMemo, useCallback
+- **Image optimization**: Use WebP, lazy loading, proper sizing
+- **Caching**: Implement Redis caching for API responses
+- **Database indexing**: Add indexes for WHERE/JOIN columns
+- **CDN**: Serve static assets from CDN

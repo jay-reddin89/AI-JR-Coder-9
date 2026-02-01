@@ -1,0 +1,132 @@
+<best_practices>
+  <general_principles>
+    <principle priority="high">
+      <name>Generate Initial Drafts Without Sequential Questions</name>
+      <description>Create the first version of requirements or design documents proactively based on user input, then iterate based on feedback. Don't ask a series of questions before creating any document.</description>
+      <rationale>Accelerates the users workflow and shows concrete options to react to</rationale>
+    </principle>
+
+    <principle priority="high">
+      <name>Require Explicit Approval at Each Phase</name>
+      <description>Do not proceed to the next phase (requirements → design → tasks) until the user explicitly approves the current document.</description>
+      <rationale>Ensures user alignment and prevents rework later</rationale>
+    </principle>
+
+    <principle priority="high">
+      <name>Focus on Planning, Not Implementation</name>
+      <description>Create planning artifacts only. Do not write implementation code, tests, or configuration as part of this mode.</description>
+      <rationale>Separation of concerns - implementation is done by Code mode or similar</rationale>
+    </principle>
+
+    <principle priority="medium">
+      <name>Use EARS Format for Requirements</name>
+      <description>Format acceptance criteria using Easy Approach to Requirements Syntax: "WHEN event THEN system SHALL response" and "IF precondition THEN system SHALL response"</description>
+      <rationale>Clear, unambiguous requirement statements</rationale>
+    </principle>
+
+    <principle priority="medium">
+      <name>Reference Requirements in Tasks</name>
+      <description>Each task in the implementation plan should reference specific requirements it addresses.</description>
+      <rationale>Traceability from implementation to requirements</rationale>
+    </principle>
+  </general_principles>
+
+  <requirements_best_practices>
+    <practice>
+      <scenario>Writing user stories</scenario>
+      <format>As a [role], I want [feature], so that [benefit]</format>
+      <example>
+        As a developer, I want automated API documentation, so that I can quickly understand endpoint contracts.
+      </example>
+    </practice>
+
+    <practice>
+      <scenario>Writing acceptance criteria</scenario>
+      <format>
+        1. WHEN [event] THEN [system] SHALL [response]
+        2. IF [precondition] THEN [system] SHALL [response]
+      </format>
+      <example>
+        WHEN a user submits the form THEN the system SHALL validate all required fields
+        IF email format is invalid THEN the system SHALL display an error message
+      </example>
+    </practice>
+  </requirements_best_practices>
+
+  <design_best_practices>
+    <practice>
+      <scenario>Architecture section</scenario>
+      <content>Include high-level architecture, component interactions, and technology choices</content>
+    </practice>
+
+    <practice>
+      <scenario>Data models</scenario>
+      <content>Define data structures, relationships, and validation requirements</content>
+    </practice>
+
+    <practice>
+      <scenario>Error handling</scenario>
+      <content>Document error cases, recovery strategies, and user-facing messages</content>
+    </practice>
+  </design_best_practices>
+
+  <task_planning_best_practices>
+    <practice>
+      <scenario>Task granularity</scenario>
+      <content>Keep tasks small enough to be completed in a single coding session</content>
+    </practice>
+
+    <practice>
+      <scenario>Test-driven sequence</scenario>
+      <content>Prioritize tasks that enable early testing of core functionality</content>
+    </practice>
+
+    <practice>
+      <scenario>Task references</scenario>
+      <content>Include requirement references like "_Requirements: 1.1, 2.3_" at the end of each task</content>
+    </practice>
+  </task_planning_best_practices>
+
+  <common_pitfalls>
+    <pitfall>
+      <description>Skipping directly to implementation</description>
+      <why_problematic>Violates the separation of planning and implementation</why_problematic>
+      <correct_approach>Complete all three planning documents first, then switch to implementation mode</correct_approach>
+    </pitfall>
+
+    <pitfall>
+      <description>Asking too many clarifying questions upfront</description>
+      <why_problematic>Slows down the workflow and frustrates users</why_problematic>
+      <correct_approach>Generate an initial draft, then ask for feedback on specific areas</correct_approach>
+    </pitfall>
+
+    <pitfall>
+      <description>Including non-coding tasks in implementation plan</description>
+      <why_problematic>Tasks should only involve writing, modifying, or testing code</why_problematic>
+      <correct_approach>Exclude deployment, user testing, documentation, and other non-coding activities</correct_approach>
+    </pitfall>
+  </common_pitfalls>
+
+  <quality_checklist>
+    <category name="requirements_quality">
+      <item>User stories are clear and have defined benefits</item>
+      <item>Acceptance criteria use EARS format</item>
+      <item>Edge cases are considered</item>
+      <item>Success criteria are measurable</item>
+    </category>
+
+    <category name="design_quality">
+      <item>Architecture addresses all requirements</item>
+      <item>Components and interfaces are clearly defined</item>
+      <item>Data models are complete and validated</item>
+      <item>Error handling is comprehensive</item>
+    </category>
+
+    <category name="task_quality">
+      <item>Tasks are discrete and actionable</item>
+      <item>Each task references specific requirements</item>
+      <item>Tasks build incrementally on previous steps</item>
+      <item>All requirements are covered</item>
+    </category>
+  </quality_checklist>
+</best_practices>
